@@ -1,0 +1,3 @@
+let physicalDmgTaken = (armor, physicalDmg) => {
+    
+}
