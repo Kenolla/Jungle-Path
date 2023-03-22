@@ -7,9 +7,6 @@ class Char {
     }
 }
 
-class Stats {
-    constructor()
-}
 
 let dmgTaken = (resist, damage) => {
     let dmgMult = 100 / (100 + resist)
