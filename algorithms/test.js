@@ -57,9 +57,6 @@ const dmgTaken = (resist, damage) => {
     return damage * dmgMult
 }
 
-
-
-
 const shyvana = new Character(665, 8.5, 38, 32, 350, 66, 0.658, 0.19737);
 
 let redBuff = {
@@ -67,8 +64,8 @@ let redBuff = {
     health: 2300
 }
 
+const que = [];
 while(redBuff.health > 0) {
-    que = [];
     //pickAbility
     let events = autoAttk(ticks, shyvana, redBuff);
     for(const event of events) {
