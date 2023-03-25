@@ -12,9 +12,7 @@ function possiblePath(currentPath, returnPath, value, runningVal) {
         let num = currentCamp.val;
         if(num + runningVal > value) continue;
         returnPath.push(currentCamp);
-        if(runningVal + num === value) {
-            return returnPath;
-        }   
+        if(runningVal + num === value) return returnPath; 
         returnPath = possiblePath(path, returnPath, value, runningVal + num)
         if(returnPath.length > 0) {
             return returnPath
