@@ -1,6 +1,7 @@
 let completedPath = [];
 let availiblePath = [{name: 'red', val: 1}, {name: 'krugs', val: 8 }, {name: 'raptors', val: 6}, {name: 'eblue', val: 1}, {name: 'egromp', val: 1}, {name: 'ewolves', val: 3}]
 let availiblePath2 = [{name: 'eblue', val: 1}, {name: 'egromp', val: 1}, {name: 'ewolves', val: 3}, {name: 'raptors', val: 6}, {name: 'red', val: 1}, {name: 'krugs', val: 8 }]
+let j4Path = [{name: 'eblue', val: 1}, {name: 'egromp', val: 1}, {name: 'ewolves', val: 3}, {name: 'raptors', val: 6}, {name: 'red', val: 1}, {name: 'krugs', val: 8 }]
 let currentNum = 2;
 
 
@@ -24,4 +25,5 @@ function possiblePath(currentPath, returnPath, value, runningVal) {
     return []
 }
 
-console.log(possiblePath(availiblePath, [], 14, 0))
+console.log(possiblePath(availiblePath, [], 2, 0))
+console.log('hi')
