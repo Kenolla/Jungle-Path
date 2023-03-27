@@ -7,10 +7,10 @@ class Camp {
     }
 }
 
-let bRed = 'Blue side, red Jungle';
-let bBlue = 'Blue side, blue Jungle';
-let rRed = 'Red side, red Jungle';
-let rBlue = 'Red side, blue Jungle';
+let bRed = 'BSRJ';
+let bBlue = 'BSBJ';
+let rRed = 'RSRJ';
+let rBlue = 'RSBJ';
 
 let bBramble = new Camp('Bramble', 7500, 3200, bRed);
 let bKrugs = new Camp('Krugs', 8200, 2700, bRed);
