@@ -31,6 +31,7 @@ let bScuttle = new Camp('Scuttle', 10000, 55000, 'bRiver');
 
 let allCamps = [bBramble, bKrugs, bRaptors, bWolves, bSentinal, bGromp, rSentinal, rGromp, rWolves, rRaptors, rBramble, rKrugs, tScuttle, bScuttle];
 
+//takes in the x y coordinates of a champion and returns the closest jungle camp that they are near
 let closestCamp = (x, y) => {
     let closestCamp = null;
     let closestCordinates = [Infinity, Infinity];
@@ -44,9 +45,11 @@ let closestCamp = (x, y) => {
     return closestCamp;
 }
 
+//takes in two arrays of an [x, y] position coordinate, and returns the direction of the jungler 
 let direction = (firstP, secondP) => {
     return [closestCamp(firstP[0], firstP[1]).jg, closestCamp(secondP[0], secondP[1]).jg]
 }
 
-console.log(closestCamp(3159, 8157))
 console.log(direction([3159, 8157], [7000, 4682]))
+console.log(closestCamp(3159, 8157))
+console.log(closestCamp(7000, 4682))
