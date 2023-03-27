@@ -29,6 +29,12 @@ let rKrugs = new Camp('Krugs', 6800, 12300, rRed);
 let tScuttle = new Camp('Scuttle', 5000, 9500, 'tRriver');
 let bScuttle = new Camp('Scuttle', 10000, 55000, 'bRiver');
 
+let mid = new Camp('Mid Lane', 7500, 7500, null);
+let top = new Camp('Top Lane', 2500, 12500, null);
+let bot = new Camp('Bot Lane', 12700, 2500, null);
+let bBase = new Camp('Blue Base', 550, 550, null);
+let rBase = new Camp('Red Base', 1450, 1450, null);
+
 let allCamps = [bBramble, bKrugs, bRaptors, bWolves, bSentinal, bGromp, rSentinal, rGromp, rWolves, rRaptors, rBramble, rKrugs, tScuttle, bScuttle];
 
 //takes in the x y coordinates of a champion and returns the closest jungle camp that they are near
