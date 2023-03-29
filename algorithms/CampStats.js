@@ -19,7 +19,7 @@ let bRed = 'BSBJ';
 let bBlue = 'BSTJ';
 let rRed = 'RSTJ';
 let rBlue = 'RSBJ';
-let side = 'RS';
+let side = 'RS'//Side goes here;
 
 
 let bBramble = new Camp('Bramble', 7500, 3200, 175, bRed);
@@ -87,10 +87,14 @@ const noInvade = () => {
     return true;
 }
 
-
-let possibleCamps = path([11810, 7452], [2500, 12500]);
-let currentXP = 160;
+const hasGanked = () => {
+    return null;
+}
+ 
+let possibleCamps = path([3159, 8157], [7000, 4682]);
+let currentXP = 310 - 150;
 const generatePath = () => {
+    //Second Minute Tick
     let junglePath = [];
     let currentLocation = [possibleCamps[0], possibleCamps[1], possibleCamps[2]]
     //This section finds the first camp and pushes it to the list
@@ -121,6 +125,40 @@ const generatePath = () => {
         return null;
     }
 
+    //Third Minute Tick
+    //If they've ganked add the lane
+    
+    jungleCS = 10 //tick3CS - last tick CS
+
+    let gankedLane = hasGanked()
+    if(gankedLane !== null) junglePath.push(gankedLane)
+
+    let currentCamp = jungleCS % 4;
+    jungleCS = jungleCS - currentCamp;
+    while(jungleCS > 0) {
+        jungleCS -= 4;
+        let camp = possibleCamps.shift();
+        junglePath.push(camp);
+    }
+
+    if(currentCamp !== 0) {
+        let camp = closestCamp(7000, 4682)//Tick Three X, Y Value here;
+        for(let i = 0; i < possibleCamps.length; i++) {
+            if(camp === possibleCamps[i]) {
+                junglePath.push(possibleCamps[i]);
+                possibleCamps.splice(i, 1);
+                break;
+            }
+        }
+    }
+
+    //Fourth Minute Tick
+    //Look to see if they've backed,
+    //Look to see if they've cleared all their camps
+    //Look to see if they've ganked a lane
+    //If not then return the scuttle crab that was on their side of the map
+
+
     return junglePath
 
     //find the direction
@@ -135,6 +173,5 @@ const generatePath = () => {
 // console.log(closestCamp(3159, 8157))
 // console.log(closestCamp(7000, 4682))
 
-console.log(generatePath())
-console.log(possibleCamps)
+console.log(generatePath()) 
 
