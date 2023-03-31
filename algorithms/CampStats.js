@@ -1,3 +1,5 @@
+import { testData } from "./testEvent.js";
+
 class Camp {
     constructor(name, x, y, xp, jg) {
         this.name = name;
@@ -39,7 +41,7 @@ let rKrugs = new Camp('Krugs', 6800, 12300, 201, rRed);
 let tScuttle = new Camp('Scuttle', 5000, 9500, 'tRriver');
 let bScuttle = new Camp('Scuttle', 10000, 55000, 'bRiver');
 
-let mid = new Camp('Mid Lane', 7500, 7500, 0, `${side}TJ`);
+let mid = new Camp('Mid Lane', 7500, 7500, 0, `${side}TJ`); //Make this modular
 let top = new Camp('Top Lane', 2500, 12500, 0, `${side}TJ`);
 let bot = new Camp('Bot Lane', 12700, 2500, 0, `${side}BJ`);
 let bBase = new Camp('Blue Base', 550, 550, 0, null);
@@ -86,11 +88,23 @@ const path = (firstP, secondP) => {
 const noInvade = () => {
     return true;
 }
+const hasGanked = (events, jungleId) => {
+    for(const event of events) {
+        if('bounty' in event) {
+            if('assistingParticipantIds' in event) {
+                for(const id of event.assistingParticipantIds) {
+                    if(id === jungleId) return closestCamp(event.position.x, event.position.y);
+                }
+            }
+            if(event.killerId === jungleId) return closestCamp(event.position.x, event.position.y);
+        }
+    }
 
-const hasGanked = () => {
     return null;
 }
- 
+
+console.log(testData)
+console.log(hasGanked(testData, 7))
 let possibleCamps = path([3159, 8157], [7000, 4682]);
 let currentXP = 310 - 150;
 const generatePath = () => {

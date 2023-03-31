@@ -1,1 +1,21 @@
-{}
+{
+  "name": "jungle-path",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "This is a full stack web application that will find the fastest clears for any jungler in league of legends.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YSobioch/Jungle-Path.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/YSobioch/Jungle-Path/issues"
+  },
+  "homepage": "https://github.com/YSobioch/Jungle-Path#readme"
+}
