@@ -171,6 +171,7 @@ const generatePath = () => {
     //Look to see if they've cleared all their camps
     //Look to see if they've ganked a lane
     //If not then return the scuttle crab that was on their side of the map
+    //stuff
 
 
     return junglePath
