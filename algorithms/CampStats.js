@@ -103,11 +103,10 @@ const hasGanked = (events, jungleId) => {
     return null;
 }
 
-console.log(testData)
-console.log(hasGanked(testData, 7))
-let possibleCamps = path([3159, 8157], [7000, 4682]);
-let currentXP = 310 - 150;
+let possibleCamps = path([3159, 8157], [7000, 4682]);//put the location of the second and third minute respectively 
+let currentXP = 310 - 150;//second minute xp
 const generatePath = () => {
+    let jungleCS;
     //Second Minute Tick
     let junglePath = [];
     let currentLocation = [possibleCamps[0], possibleCamps[1], possibleCamps[2]]
@@ -144,7 +143,7 @@ const generatePath = () => {
     
     jungleCS = 10 //tick3CS - last tick CS
 
-    let gankedLane = hasGanked()
+    let gankedLane = hasGanked(testData, 7)
     if(gankedLane !== null) junglePath.push(gankedLane)
 
     let currentCamp = jungleCS % 4;
@@ -167,20 +166,16 @@ const generatePath = () => {
     }
 
     //Fourth Minute Tick
+    jungleCS = 24 //tick4CS - last tick CS
     //Look to see if they've backed,
-    //Look to see if they've cleared all their camps
-    //Look to see if they've ganked a lane
+    if(closestCamp(x, y) === bBase || rBase) return junglePath;
+    gankedLane = hasGanked(testData, 7)
+    if(gankedLane !== null) junglePath.push(gankedLane)
     //If not then return the scuttle crab that was on their side of the map
     //stuff
 
 
     return junglePath
-
-    //find the direction
-    //look at where they are the next minute;
-    //if jg cs % 4 !== 0 find out the current camp and remove it
-    //else add up camps
-
 }
 
 // console.log(direction([3159, 8157], [7000, 4682]))
