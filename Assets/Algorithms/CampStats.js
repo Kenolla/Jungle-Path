@@ -1,12 +1,14 @@
-import { testData } from "../testEvent.js";
+import { testData } from "../Camps/testEvent.js";
 import { generateCamps } from "../Camps/camps.js";
+
+let data = generateCamps('RS')
 
 
 //takes in the x y coordinates of a champion and returns the closest jungle camp that they are near
 const closestCamp = (x, y) => {
     let closestCamp = null;
     let closestCordinates = [Infinity, Infinity];
-    for(const camp of allCamps) {
+    for(const camp of data.allCamps) {
         if(Math.abs((camp.x - x)) + Math.abs((camp.y - y)) < Math.abs(closestCordinates[0] - x) + Math.abs(closestCordinates[1] - y)) {
             closestCamp = camp;
             closestCordinates = [camp.x, camp.y]
@@ -19,7 +21,7 @@ const closestCamp = (x, y) => {
 //returns the path with the camps in order based on the direction the jungler is going.
 const path = (firstP, secondP) => {
     let jungles = [closestCamp(firstP[0], firstP[1]).jg, closestCamp(secondP[0], secondP[1]).jg]
-    for(const path of allPaths) {
+    for(const path of data.allPaths) {
         if(jungles.join('t') === path.name) return path.camps
     }
 
