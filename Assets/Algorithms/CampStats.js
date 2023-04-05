@@ -1,15 +1,15 @@
-import { testData } from "../Camps/testEvent.js";
+import { test } from "../Camps/testEvent.js";
 import { generateCamps } from "../Camps/camps.js";
 
-let data = generateCamps('RS')
-
+let data;
+let jungle = test;
 
 //takes in the x y coordinates of a champion and returns the closest jungle camp that they are near
-const closestCamp = (x, y) => {
+const closestCamp = (current) => {
     let closestCamp = null;
     let closestCordinates = [Infinity, Infinity];
     for(const camp of data.allCamps) {
-        if(Math.abs((camp.x - x)) + Math.abs((camp.y - y)) < Math.abs(closestCordinates[0] - x) + Math.abs(closestCordinates[1] - y)) {
+        if(Math.abs((camp.x - current.x)) + Math.abs((camp.y - current.y)) < Math.abs(closestCordinates[0] - current.x) + Math.abs(closestCordinates[1] - current.y)) {
             closestCamp = camp;
             closestCordinates = [camp.x, camp.y]
         }
@@ -20,7 +20,7 @@ const closestCamp = (x, y) => {
 
 //returns the path with the camps in order based on the direction the jungler is going.
 const path = (firstP, secondP) => {
-    let jungles = [closestCamp(firstP[0], firstP[1]).jg, closestCamp(secondP[0], secondP[1]).jg]
+    let jungles = [closestCamp(firstP).jg, closestCamp(secondP).jg]
     for(const path of data.allPaths) {
         if(jungles.join('t') === path.name) return path.camps
     }
@@ -28,33 +28,36 @@ const path = (firstP, secondP) => {
     return null;
 }
 
-const noInvade = () => {
-    return true;
+const noInvade = (id) => {
+    console.log(!jungle.getCharStat(id, 'xp', 1))
+    return !jungle.getCharStat(id, 'xp', 1);
 }
 const hasGanked = (events, jungleId) => {
     for(const event of events) {
         if('bounty' in event) {
             if('assistingParticipantIds' in event) {
                 for(const id of event.assistingParticipantIds) {
-                    if(id === jungleId) return closestCamp(event.position.x, event.position.y);
+                    if(id === jungleId) return closestCamp(event.position);
                 }
             }
-            if(event.killerId === jungleId) return closestCamp(event.position.x, event.position.y);
+            if(event.killerId === jungleId) return closestCamp(event.position);
         }
     }
 
     return null;
 }
 
-let possibleCamps = path([3159, 8157], [7000, 4682]);//put the location of the second and third minute respectively 
-let currentXP = 310 - 150;//second minute xp
-const generatePath = () => {
-    let jungleCS;
+const generatePath = (side) => {
+    data = side === 2 ? generateCamps('BS') : generateCamps('RS');
+    let possibleCamps = path(jungle.getCharStat(side, 'position', 2), jungle.getCharStat(side, 'position', 3));//put the location of the second and third minute respectively 
+    let currentXP = jungle.getCharStat(side, 'xp', 2) - 150;//second minute xp
+
+    let jungleCS = jungle.getCharStat(side, 'jungleMinionsKilled', 2);
     //Second Minute Tick
     let junglePath = [];
     let currentLocation = [possibleCamps[0], possibleCamps[1], possibleCamps[2]]
     //This section finds the first camp and pushes it to the list
-    if(noInvade()) {
+    if(noInvade(side)) {
         for(let i = 0; i < currentLocation.length; i++) {
             let runningXP = currentLocation[i].xp;
             if(currentXP === runningXP) {
@@ -83,9 +86,9 @@ const generatePath = () => {
 
     //Third Minute Tick
     //If they've ganked add the lane
-    jungleCS = 10 //tick3CS - last tick CS
+    jungleCS = jungle.getCharStat(side, 'jungleMinionsKilled', 3) - jungleCS //tick3CS - last tick CS
 
-    let gankedLane = hasGanked(testData, 7)
+    let gankedLane = hasGanked(jungle.getEventFrames(3), side)
     if(gankedLane !== null) junglePath.push(gankedLane)
 
     let currentCamp = jungleCS % 4;
@@ -97,7 +100,7 @@ const generatePath = () => {
     }
 
     if(currentCamp !== 0) {
-        let camp = closestCamp(7000, 4682)//Tick Three X, Y Value here;
+        let camp = closestCamp(jungle.getCharStat(side, 'position', 3))//Tick Three X, Y Value here;
         for(let i = 0; i < possibleCamps.length; i++) {
             if(camp === possibleCamps[i]) {
                 junglePath.push(possibleCamps[i]);
@@ -108,7 +111,7 @@ const generatePath = () => {
     }
 
     //Fourth Minute Tick
-    jungleCS = 4 //tick4CS - last tick CS
+    jungleCS = jungle.getCharStat(side, 'jungleMinionsKilled', 4) - jungle.getCharStat(side, 'jungleMinionsKilled', 3) //tick4CS - last tick CS
     currentCamp = jungleCS % 4;
     jungleCS = jungleCS - currentCamp;
     while(jungleCS > 0 && possibleCamps.length) {
@@ -116,7 +119,19 @@ const generatePath = () => {
         let camp = possibleCamps.shift();
         junglePath.push(camp);
     }
-    gankedLane = hasGanked(testData, 7)
+
+    if(currentCamp !== 0) {
+        let camp = closestCamp(jungle.getCharStat(side, 'position', 4))
+        for(let i = 0; i < possibleCamps.length; i++) {
+            if(camp === possibleCamps[i]) {
+                junglePath.push(possibleCamps[i]);
+                possibleCamps.splice(i, 1);
+                break;
+            }
+        }
+    }
+
+    gankedLane = hasGanked(jungle.getEventFrames(4), side)
     if(gankedLane !== null) junglePath.push(gankedLane)
 
     return junglePath
@@ -127,5 +142,5 @@ const generatePath = () => {
 // console.log(closestCamp(3159, 8157))
 // console.log(closestCamp(7000, 4682))
 
-console.log(generatePath()) 
+console.log(generatePath(2)) 
 
