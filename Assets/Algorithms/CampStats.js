@@ -29,9 +29,9 @@ const path = (firstP, secondP) => {
 }
 
 const noInvade = (id) => {
-    console.log(!jungle.getCharStat(id, 'xp', 1))
     return !jungle.getCharStat(id, 'xp', 1);
 }
+
 const hasGanked = (events, jungleId) => {
     for(const event of events) {
         if('bounty' in event) {
@@ -47,12 +47,41 @@ const hasGanked = (events, jungleId) => {
     return null;
 }
 
+const hasGankedEarly = (events, jungleId) => {
+    for(const event of events) {
+        if('bounty' in event) {
+            if('assistingParticipantIds' in event) {
+                for(const id of event.assistingParticipantIds) {
+                    if(id === jungleId) {
+                        let time = event.timestamp;
+                        time = time / 1000
+                        time = Math.trunc(time);
+                        time = time / 60
+                        time = time - Math.floor(time);
+                        if(time < 0.17) return closestCamp(event.position);
+                    }
+                }
+            }
+            if(event.killerId === jungleId) {
+                let time = event.timestamp;
+                time = time / 1000
+                time = Math.trunc(time);
+                time = time / 60
+                time = time - Math.floor(time);
+                if(time < 0.17) return closestCamp(event.position);
+            } 
+        }
+    }
+    
+    return null;
+}
+
 const generatePath = (side) => {
     data = side === 2 ? generateCamps('BS') : generateCamps('RS');
     let possibleCamps = path(jungle.getCharStat(side, 'position', 2), jungle.getCharStat(side, 'position', 3));//put the location of the second and third minute respectively 
     let currentXP = jungle.getCharStat(side, 'xp', 2) - 150;//second minute xp
-
     let jungleCS = jungle.getCharStat(side, 'jungleMinionsKilled', 2);
+    
     //Second Minute Tick
     let junglePath = [];
     let currentLocation = [possibleCamps[0], possibleCamps[1], possibleCamps[2]]
@@ -75,7 +104,7 @@ const generatePath = (side) => {
             }
         }
     } else if(jungleCS % 4 === 0) {
-        while(jungleCS > 4) {
+        while(jungleCS > 0) {
             jungleCS -= 4;
             let camp = possibleCamps.shift();
             junglePath.push(camp);
@@ -86,10 +115,12 @@ const generatePath = (side) => {
 
     //Third Minute Tick
     //If they've ganked add the lane
-    jungleCS = jungle.getCharStat(side, 'jungleMinionsKilled', 3) - jungleCS //tick3CS - last tick CS
-
-    let gankedLane = hasGanked(jungle.getEventFrames(3), side)
-    if(gankedLane !== null) junglePath.push(gankedLane)
+    jungleCS = jungle.getCharStat(side, 'jungleMinionsKilled', 3) - jungle.getCharStat(side, 'jungleMinionsKilled', 2) //tick3CS - last tick CS
+    let gankedLane = hasGankedEarly(jungle.getEventFrames(3), side)
+    if(gankedLane !== null) {
+        junglePath.push('kill')
+        junglePath.push(gankedLane)
+    }
 
     let currentCamp = jungleCS % 4;
     jungleCS = jungleCS - currentCamp;
@@ -110,10 +141,25 @@ const generatePath = (side) => {
         }
     }
 
+    if(gankedLane === null) {
+        gankedLane = hasGanked(jungle.getEventFrames(4), side)
+        if(gankedLane !== null) {
+            junglePath.push('kill')
+            junglePath.push(gankedLane)
+        }
+    }
+
     //Fourth Minute Tick
     jungleCS = jungle.getCharStat(side, 'jungleMinionsKilled', 4) - jungle.getCharStat(side, 'jungleMinionsKilled', 3) //tick4CS - last tick CS
     currentCamp = jungleCS % 4;
     jungleCS = jungleCS - currentCamp;
+
+    gankedLane = hasGankedEarly(jungle.getEventFrames(4), side)
+    if(gankedLane !== null) {
+        junglePath.push('kill')
+        junglePath.push(gankedLane)
+    }
+
     while(jungleCS > 0 && possibleCamps.length) {
         jungleCS -= 4;
         let camp = possibleCamps.shift();
@@ -131,16 +177,17 @@ const generatePath = (side) => {
         }
     }
 
-    gankedLane = hasGanked(jungle.getEventFrames(4), side)
-    if(gankedLane !== null) junglePath.push(gankedLane)
+    if(gankedLane === null) {
+        gankedLane = hasGanked(jungle.getEventFrames(4), side)
+        if(gankedLane !== null) {
+            junglePath.push('kill')
+            junglePath.push(gankedLane)
+        }
+    }
 
     return junglePath
 }
 
-// console.log(direction([3159, 8157], [7000, 4682]))
-// console.log(path([3159, 8157], [7000, 4682]))
-// console.log(closestCamp(3159, 8157))
-// console.log(closestCamp(7000, 4682))
 
-console.log(generatePath(2)) 
+console.log(generatePath(7)) 
 
