@@ -1,4 +1,4 @@
-import { test } from "../Camps/testEvent.js";
+import { test } from "../Camps/TimeLine.js";
 import { generateCamps } from "../Camps/camps.js";
 
 let data;
@@ -142,7 +142,7 @@ const generatePath = (side) => {
     }
 
     if(gankedLane === null) {
-        gankedLane = hasGanked(jungle.getEventFrames(4), side)
+        gankedLane = hasGanked(jungle.getEventFrames(3), side)
         if(gankedLane !== null) {
             junglePath.push('kill')
             junglePath.push(gankedLane)
@@ -176,6 +176,8 @@ const generatePath = (side) => {
             }
         }
     }
+
+    junglePath.push('end')
 
     if(gankedLane === null) {
         gankedLane = hasGanked(jungle.getEventFrames(4), side)
