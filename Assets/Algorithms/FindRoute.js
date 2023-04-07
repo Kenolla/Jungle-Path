@@ -110,7 +110,7 @@ const generatePath = (side) => {
             junglePath.push(camp);
         }
     } else {
-        return null;
+        return 'too chaotic';
     }
 
     //Third Minute Tick
@@ -193,3 +193,4 @@ const generatePath = (side) => {
 
 console.log(generatePath(7)) 
 
+//illumkni
