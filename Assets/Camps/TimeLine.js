@@ -1,4 +1,4 @@
- import { APIKey } from "./APIkey.js"
+ import { APIKey } from "../Algorithms/APIkey.js"
 
  console.log(APIKey)
  
@@ -37,19 +37,6 @@
         return frame.events
     }
  }
- 
- async function getTimeLine(summoner, numberOfGames, APIKey) {
-    if(numberOfGames > 100) return null;
-    let res = await fetch(`https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summoner}?api_key=${APIKey}`)
-    let newSummoner = await res.json()
-    let puuid = newSummoner.puuid
-    
-    
-    return newSummoner
- }
-
-let user = await getTimeLine('Raynbw', 0, APIKey)
-console.log(user)
 
  const frames = [
     {
