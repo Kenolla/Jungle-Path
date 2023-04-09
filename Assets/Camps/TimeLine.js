@@ -38,7 +38,7 @@
     }
  }
 
-//Add modularity here
+
 const game = await getTimeLine('ARMAO', 1, APIKey)
 const frames = game[0] !== null ? game[0].frames : null;
 
