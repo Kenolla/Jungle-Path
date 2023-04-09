@@ -16,12 +16,15 @@ async function getTimeLine(summoner, numberOfGames, APIKey) {
         res = await fetch(`https://americas.api.riotgames.com/lol/match/v5/matches/${matchId}?api_key=${APIKey}`)
         const gameData = await res.json();
 
+        let pos = 0
         for(let summoner of gameData.info.participants) {
+            pos++;
             if(summoner.puuid === puuid) {
                 if(summoner.individualPosition !== 'JUNGLE') {
                     matchData.champion = null;
                     break;
                 }
+                matchData.side = pos < 5 ? 2 : 7;
                 matchData.champion = summoner.championName
                 matchData.championId = summoner.championId
                 break;

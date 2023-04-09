@@ -2,8 +2,9 @@
  import { getTimeLine } from "../Algorithms/CreateMatchTimeLines.js"
  
  class TimeLine {
-    constructor(frames) {
-        this.frames = frames
+    constructor(frames, side) {
+        this.frames = frames,
+        this.side = side
     }
 
     getCharFrames(id) {
@@ -37,9 +38,10 @@
     }
  }
 
-const game = await getTimeLine('illumkni', 1, APIKey)
+//Add modularity here
+const game = await getTimeLine('ARMAO', 1, APIKey)
 const frames = game[0] !== null ? game[0].frames : null;
 
-let test = new TimeLine(frames)
+let test = new TimeLine(frames, game[0].side)
 
 export { test }
