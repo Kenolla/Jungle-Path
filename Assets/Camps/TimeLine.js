@@ -1,4 +1,4 @@
- import { APIKey } from "../Algorithms/APIkey.js"
+ import { APIKey } from "../APIkey.js"
  import { getTimeLine } from "../Algorithms/CreateMatchTimeLines.js"
  
  class TimeLine {

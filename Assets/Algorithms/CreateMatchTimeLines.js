@@ -1,5 +1,3 @@
-import { APIKey } from "./APIkey.js";
-
 async function getTimeLine(summoner, numberOfGames, APIKey) {
     if(numberOfGames > 40) return null;
     const timeLinesofSummoner = []
@@ -12,6 +10,7 @@ async function getTimeLine(summoner, numberOfGames, APIKey) {
     const matchIds = await res.json();
 
     for(let matchId of matchIds) {
+        await delay(3000)
         const matchData = {}
         res = await fetch(`https://americas.api.riotgames.com/lol/match/v5/matches/${matchId}?api_key=${APIKey}`)
         const gameData = await res.json();
@@ -44,6 +43,10 @@ async function getTimeLine(summoner, numberOfGames, APIKey) {
     }
     
     return timeLinesofSummoner
+}
+
+function delay(ms) {
+    return new Promise(res => setTimeout(res, ms))
 }
 
 export { getTimeLine }
