@@ -193,5 +193,6 @@ function generatePath() {
 
 
 //generates path 
+//refactor this
 console.log(generatePath()) 
 
