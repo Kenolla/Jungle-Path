@@ -39,7 +39,7 @@
  }
 
 //stufff
-const game = await getTimeLine('Aprrinity v2', 1, APIKey)
+const game = await getTimeLine('Wanfeng ouo', 1, APIKey)
 const frames = game[0] !== null ? game[0].frames : null;
 
 let test = new TimeLine(frames, game[0].side)

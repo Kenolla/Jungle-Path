@@ -192,5 +192,6 @@ function generatePath() {
 }
 
 
+//generates path 
 console.log(generatePath()) 
 
