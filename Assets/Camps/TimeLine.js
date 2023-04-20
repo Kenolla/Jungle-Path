@@ -38,7 +38,7 @@
     }
  }
 
-//stufff
+//stuffff
 const game = await getTimeLine('Wanfeng ouo', 1, APIKey)
 const frames = game[0] !== null ? game[0].frames : null;
 
